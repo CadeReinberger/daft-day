@@ -441,5 +441,9 @@ def train_models():
         params = np.array([a, b, c])
         np.save('adp_points_models/' + pos + '_model.npy', params)
         
-train_models()   
+#train_models()
+        
+reg_plot_least_squares_transmonomial('qb')
+
+
         

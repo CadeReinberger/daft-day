@@ -1,0 +1,4 @@
+This can be safely ignored. This was the start of an idea I had to get a 
+theoretical explanation for adp vs points per position. Didn't quite pan out.
+
+https://www.desmos.com/calculator/a6uy3uwncp

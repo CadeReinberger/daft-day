@@ -1,6 +1,8 @@
 import json
 import numpy as np
 from sklearn.decomposition import PCA
+from sklearn.decomposition import KernelPCA
+import pickle
 
 '''
 Our working idea is to do the easiest possible thing and fit a hyperplane to 
@@ -30,5 +32,19 @@ def save_pca_model():
     (C, mu, ev) = train_pca_model()
     np.save('team_models/C.npy', C)
     np.save('team_models/mu.npy', mu)
+    
+def train_kernel_pca_model():
+    data = get_datapoints()
+    kpca = KernelPCA(n_components = 4, kernel = 'cosine',
+                     fit_inverse_transform = True)
+    kpca.fit(data) 
+    return kpca
+
+def save_kernel_pca_model():
+    kpca = train_kernel_pca_model()
+    with open('team_models/kpca.pkl', 'wb') as pickle_file:
+            pickle.dump(kpca, pickle_file)
 
 save_pca_model()
+save_kernel_pca_model()
+

@@ -26,6 +26,21 @@ test_ranking = [('Saquon Barkley', 'RB', 'NYG', 1.9),
                 ('Tyreek Hill', 'WR', 'KC', 12.9),
                 ('Michael Thomas', 'WR', 'NO', 12.9)]
 
+test_lay_ranking = [('Saquon Barkley', 'RB', 'NYG'),
+                    ('Alvin Kamara', 'RB', 'NO'),
+                    ('Christian McCaffrey', 'RB', 'CAR'),
+                    ('Ezekiel Elliot', 'RB', 'DAL'),
+                    ('James Connor', 'RB', 'PIT'),
+                    ('DeAndre Hopkins', 'WR', 'HOU'),
+                    ('LeVeon Bell', 'RB', 'NYJ'),
+                    ('Nick Chubb', 'RB', 'CLE'),
+                    ('Davante Adams', 'WR', 'GB'),
+                    ('Dalvin Cook', 'RB', 'MIN'),
+                    ('Julio Jones', 'WR', 'ATL'),
+                    ('Todd Gurley', 'RB', 'LAR'),
+                    ('Tyreek Hill', 'WR', 'KC'),
+                    ('Michael Thomas', 'WR', 'NO')]
+
 def identify_teams(ranking):
     #ranking is here a list of 4-tuples: (name, pos, team, adp)
     teams = set()
@@ -39,27 +54,27 @@ def get_team_vector(ranking, team):
     #first, get the quarterback implied points
     qbs = [player for player in players if player[1] == 'QB']
     qb1 = sorted(qbs, key = lambda qb : qb[3])[0] if len(qbs) > 0 else None
-    qb_adp = qb1[3] if qb1 is not None else len(ranking) + 1
+    qb_adp = qb1[3] if qb1 is not None else max(len(ranking) + 1, 32 * 7)
     qb_pts = final_adp_models.qb(qb_adp)
     #now, running back 1 adp
     rbs = [player for player in players if player[1] == 'RB']
     rb1 = sorted(rbs, key = lambda rb : rb[3])[0] if len(rbs) > 0 else None
-    rb1_adp = rb1[3] if rb1 is not None else len(ranking) + 1
+    rb1_adp = rb1[3] if rb1 is not None else max(len(ranking) + 1, 32 * 7)
     rb1_pts = final_adp_models.rb(rb1_adp)
     #running back 2
     rbs = [player for player in players if player[1] == 'RB']
     rb2 = sorted(rbs, key = lambda rb : rb[3])[1] if len(rbs) > 1 else None
-    rb2_adp = rb2[3] if rb2 is not None else len(ranking) + 1
+    rb2_adp = rb2[3] if rb2 is not None else max(len(ranking) + 1, 32 * 7)
     rb2_pts = final_adp_models.rb(rb2_adp)  
     #wide receiver 1
     wrs = [player for player in players if player[1] == 'WR']
     wr1 = sorted(wrs, key = lambda wr : wr[3])[0] if len(wrs) > 0 else None
-    wr1_adp = wr1[3] if wr1 is not None else len(ranking) + 1
+    wr1_adp = wr1[3] if wr1 is not None else max(len(ranking) + 1, 32 * 7)
     wr1_pts = final_adp_models.wr(wr1_adp)   
     #wide receiver 2
     wrs = [player for player in players if player[1] == 'WR']
     wr2 = sorted(wrs, key = lambda wr : wr[3])[1] if len(wrs) > 1 else None
-    wr2_adp = wr2[3] if wr2 is not None else len(ranking) + 1
+    wr2_adp = wr2[3] if wr2 is not None else max(len(ranking) + 1, 32 * 7)
     wr2_pts = final_adp_models.wr(wr2_adp)
     #return the result
     return np.array([qb_pts, rb1_pts, rb2_pts, wr1_pts, wr2_pts])    
@@ -140,5 +155,13 @@ def _rerank(ranking):
 def rerank(rankings):
     return _rerank([(r[0], r[1], r[2], i+1) for (i, r) in enumerate(rankings)]) 
 
-#print(_rerank(test_ranking))
+'''
+print(test_ranking)
+print(_rerank(test_ranking))
+'''
+
+'''
+print(test_lay_ranking)
+print(rerank(test_lay_ranking))
+'''
     
